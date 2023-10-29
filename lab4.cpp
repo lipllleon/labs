@@ -42,10 +42,11 @@ int main()
         max = 0;
         std::cout << "Введите число: ";
         cin >> x;
-        if (abs(x) >= 1000000000) {
+        if (x >= 1000000000) {
             std::cout << "Слишком большое число";
             break;
         }
+        x=abs(x);
         while (x > 0)
         {
             m = x % 10;
