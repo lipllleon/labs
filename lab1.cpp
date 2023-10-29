@@ -1,4 +1,5 @@
-﻿#include <iostream>
+//Вариант 7
+#include <iostream>
 #include <cstdlib>
 
 using namespace std;
