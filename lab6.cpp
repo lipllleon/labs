@@ -7,6 +7,9 @@ using namespace std;
 int main()
 {
     setlocale(0, "RU");
+
+    cout << endl << endl << "__________Пункт 1___________" << endl << endl;
+
     char str[101] = "Анна Павловна почти закрыла глаза в знак того, никто не может судить за то, что нравится императрице";
     char dict[43] = "БВГДЖЗЙКЛМНПРСТФХЦЧШЩбвгджзйклмнпрстфxцчшщ";
     bool ifsogl;
@@ -163,4 +166,31 @@ int main()
     double seconds = (double)(end - start) / CLOCKS_PER_SEC;
     cout.precision(3);
     cout << "\nВремя работы: " << seconds << " сек\n";
+
+
+    //_________________________________________________________________________________________________________________________
+
+    cout << endl << endl << "__________Доп___________" << endl << endl;
+
+    ifstream filedop("textdop.txt");
+    ofstream output("output.txt");
+    string st;
+    int l;
+    while (!filedop.eof()) {
+        filedop >> st;
+        l = st.length();
+        for (int i = 0; i < l - 1; i++) {
+            if ((st[i] >= -64) && (st[i] <= -1) || (st[i] == -72) || (st[i] == -88)) {
+                if (st[i] == st[i + 1]) {
+                    st[i] = toupper(st[i]);
+                    st[i + 1] = toupper(st[i + 1]);
+                    st = st + "(" + st[i] + st[i + 1] + ")";
+               }
+            }
+        }
+        output << st << " ";
+    }
+    filedop.close();
+    output.close();
+    cout << "Отформатированный текст записан в output.txt" << endl << endl;
 }
