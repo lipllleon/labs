@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿// 4 Вариант
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -6,19 +7,20 @@ using namespace std;
 
 int main()
 {
+    system("chcp 1251 >> null");
     setlocale(0, "RU");
 
     cout << endl << endl << "__________Пункт 1___________" << endl << endl;
 
     char str[101] = "Анна Павловна почти закрыла глаза в знак того, никто не может судить за то, что нравится императрице";
-    char dict[43] = "БВГДЖЗЙКЛМНПРСТФХЦЧШЩбвгджзйклмнпрстфxцчшщ";
+    char dict[22] = "бвгджзйклмнпрстфxцчшщ";
     bool ifsogl;
     int k = 0;
     cout << "Исходная строка: " << endl << str << endl << endl;
     for (int i = 0; i < 101; i++) {
         ifsogl = false;
-        for (int j = 0; j < 43; j++) {
-            if (str[i] == dict[j]) {
+        for (int j = 0; j < 21; j++) {
+            if ((str[i] == dict[j]) || (str[i] == (char)((int)dict[j] - 32))) {
                 ifsogl = true;
                 break;
             }
@@ -33,24 +35,48 @@ int main()
 
     cout << "Строка без согласных: " << endl << str;
 
+    //Таблица символов
+    cout << endl << endl;
+    for (int i = -64; i < -32; i++) {
+        cout << (char)i << " (" << i << ")" << "     ";
+        cout << (char)(i + 32) << " (" << i + 32 << ")" << endl;
+    }
+    cout << (char)-72 << " (" << -72 << ")" << "     ";
+    cout << (char)-88 << " (" << -88 << ")" << endl;
+    cout << '.' << " (" << (int)'.' << ")" << "     ";
+    cout << ',' << " (" << (int)',' << ")" << endl;
+    cout << '!' << " (" << (int)'!' << ")" << "     ";
+    cout << '?' << " (" << (int)'?' << ")" << endl;
+    cout << '(' << " (" << (int)'(' << ")" << "     ";
+    cout << ')' << " (" << (int)')' << ")" << endl;
+    cout << '"' << " (" << (int)'"' << ")" << "     ";
+    cout << '-' << " (" << (int)'-' << ")" << endl;
+    cout << ':' << " (" << (int)':' << ")" << "     ";
+    cout << ';' << " (" << (int)';' << ")" << endl << endl;
+
     //_________________________________________________________________________________________________________________________
 
     cout << endl << endl << "__________Пункт 2___________" << endl << endl;
 
-    clock_t start = clock();
-
     //Чтение заданного слова----------------------------------------------
+    short N;
     string wrd;
     ifstream fin("input.txt");
+    //В файле input.txt данные хранятся в формате число пробел строчка (10 Прекрасный)
     if (fin.is_open())
-        fin >> wrd;
-    else
-    {
+        fin >> N >> wrd;
+    else {
         cout << "Файл input.txt не открыт. Введите слово: ";
         cin >> wrd;
+        cout << "Введите N: ";
+        cin >> N;
     }
-    fin.close();
-
+    if (N < 0 || N > 10) {
+        cout << "Введён некорректный N (" << N << ") \nУстановлено число N = 10 \n";
+        N = 10;
+    }
+    else
+        cout << "N = " << N << endl;
     cout << "Заданное слово: " << wrd;
 
     //Удаление повторяющихся букв (из "АБВвбабвабб" получаем "абв")-------
@@ -119,7 +145,7 @@ int main()
                 is_similar = false;
 
                 //Проверка на совпадение слов-------------------
-                for (int i = 9; i > 0; i--) { //Идём справа налево
+                for (int i = N - 1; i > 0; i--) { //Идём справа налево
                     if (result[i] == "")
                         break;  //Если ячейка пуста - останавливаем проверку
                     if (s == result[i]) {
@@ -131,7 +157,7 @@ int main()
                     result[0] = s;
 
                     //Сортировка по возрастанию длины------------
-                    for (int i = 0; i < 9; i++)
+                    for (int i = 0; i < N - 1; i++)
                         if (result[i].length() > result[i + 1].length())
                             swap(result[i], result[i + 1]);
                         else
@@ -140,6 +166,8 @@ int main()
 
             }
         }
+        //Есть ещё пару вариантов заполнения массива
+        //Про них можно в личке спросить)
     }
     file.close();
 
@@ -149,8 +177,8 @@ int main()
         cout << "Файл открыт" << endl;
 
         //Вывод по невозрастанию-----------
-        for (int i = 9; i >= 0; i--)
-            fout << 10 - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
+        for (int i = N - 1; i >= 0; i--)
+            fout << N - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
         cout << "Данные записаны" << endl << endl << "Результат: " << endl;
     }
     else {
@@ -159,16 +187,12 @@ int main()
     fout.close();
 
     //Вывод в консоль-------------------------------------------------------
-    for (int i = 9; i >= 0; i--)
-        cout << 10 - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
-
-    clock_t end = clock();
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    cout.precision(3);
-    cout << "\nВремя работы: " << seconds << " сек\n";
-
+    for (int i = N - 1; i >= 0; i--)
+        cout << N - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
 
     //_________________________________________________________________________________________________________________________
+
+    //Недоделан :(
 
     cout << endl << endl << "__________Доп___________" << endl << endl;
 
