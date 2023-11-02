@@ -168,7 +168,7 @@ int main()
             /*до*/
 
             /*
-            for (int i = 9; i >= 0; i--) {
+            for (int i = N - 1; i >= 0; i--) {
                 if (s == result[i])
                     break;
                 if (s.length() > result[i].length()) {
