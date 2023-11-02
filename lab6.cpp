@@ -110,7 +110,7 @@ int main()
         int i = 0;
 
         //Проверка условия-------------------------------------
-        for (char const& c : s) {
+        while(i < s.length()) {
 
             //Проверка на русские буквы------------------------
             if (!((s[i] >= -64) && (s[i] <= -1) || (s[i] == -72) || (s[i] == -88))) {
@@ -139,7 +139,7 @@ int main()
 
         //Заполнение массива------------------------------------
         if (is_rule && !(s == "")) {
-
+            /*от*/
             //Сравнение с наименьшим словом массива-------------
             if (s.length() > result[0].length()) {
                 is_similar = false;
@@ -165,9 +165,47 @@ int main()
                 }
 
             }
+            /*до*/
+
+            /*
+            for (int i = 9; i >= 0; i--) {
+                if (s == result[i])
+                    break;
+                if (s.length() > result[i].length()) {
+                    for (int j = 0; j < i; j++) {
+                        result[j] = result[j + 1];
+                    }
+                    result[i] = s;
+                    break;
+                }
+            }
+            */
+
+            /*
+            int min_l = INT16_MAX;
+            int min_i;
+            is_similar = false;
+            for (int i = 0; i < N; i++) {
+                if (result[i].length() < min_l) {
+                    min_l = result[i].length();
+                    min_i = i;
+                }
+                if (s == result[i]) {
+                    is_similar = true;
+                    break;
+                }
+            }
+            if (!is_similar) {
+                if (s.length() > min_l)
+                    result[min_i] = s;
+            }
+            //Для этого способа неоюходима сортировка перед выводом в result.txt и консоль
+            */
+
+            //Часть между от и до можно менять на одну из частей в комментариях
+            //Это иные способы заполнения массива)
+            //За объяснением можно в лс t.me/lipllleon
         }
-        //Есть ещё пару вариантов заполнения массива
-        //Про них можно в личке спросить)
     }
     file.close();
 
