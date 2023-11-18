@@ -5,6 +5,14 @@
 
 using namespace std;
 
+int strlength(string s) {
+    int l = s.length();
+    for (int i = 0; i < s.length(); i++)
+        if (s[i] == '-')
+            l--;
+    return l;
+}
+
 int main()
 {
     system("chcp 1251 >> null");
@@ -110,10 +118,10 @@ int main()
         int i = 0;
 
         //Проверка условия-------------------------------------
-        while(i < s.length()) {
+        while (i < s.length()) {
 
             //Проверка на русские буквы------------------------
-            if (!((s[i] >= -64) && (s[i] <= -1) || (s[i] == -72) || (s[i] == -88))) {
+            if (!((s[i] >= -64) && (s[i] <= -1) || (s[i] == -72) || (s[i] == -88) || (s[i] == '-'))) {
                 if (((s[i] >= 65) && (s[i] <= 90)) || ((s[i] >= 97) && (s[i] <= 122))) {
                     is_rule = false;
                     break;      //Если английская буква - переходим к след слову
@@ -141,7 +149,7 @@ int main()
         if (is_rule && !(s == "")) {
             /*от*/
             //Сравнение с наименьшим словом массива-------------
-            if (s.length() > result[0].length()) {
+            if (strlength(s) > strlength(result[0])) {
                 is_similar = false;
 
                 //Проверка на совпадение слов-------------------
@@ -158,7 +166,7 @@ int main()
 
                     //Сортировка по возрастанию длины------------
                     for (int i = 0; i < N - 1; i++)
-                        if (result[i].length() > result[i + 1].length())
+                        if (strlength(result[i]) > strlength(result[i + 1]))
                             swap(result[i], result[i + 1]);
                         else
                             break;
@@ -216,7 +224,7 @@ int main()
 
         //Вывод по невозрастанию-----------
         for (int i = N - 1; i >= 0; i--)
-            fout << N - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
+            fout << N - i << ") " << result[i] << " (" << strlength(result[i]) << ")" << endl;
         cout << "Данные записаны" << endl << endl << "Результат: " << endl;
     }
     else {
@@ -226,7 +234,7 @@ int main()
 
     //Вывод в консоль-------------------------------------------------------
     for (int i = N - 1; i >= 0; i--)
-        cout << N - i << ") " << result[i] << " (" << result[i].length() << ")" << endl;
+        cout << N - i << ") " << result[i] << " (" << strlength(result[i]) << ")" << endl;
 
     //_________________________________________________________________________________________________________________________
 
@@ -247,7 +255,7 @@ int main()
                     st[i] = toupper(st[i]);
                     st[i + 1] = toupper(st[i + 1]);
                     st = st + "(" + st[i] + st[i + 1] + ")";
-               }
+                }
             }
         }
         output << st << " ";
