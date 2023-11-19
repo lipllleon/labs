@@ -7,6 +7,7 @@ using namespace std;
 int A[11][11];
 int N;
 
+//1 пункт
 void getA(string fileName)
 {
 	ifstream fin(fileName);
@@ -88,22 +89,100 @@ void sort() {
 	cout << "Матрица отсортирована \n";
 }
 
+//2 пункт
 int super(int a) {
-	if (a < 0)
-		return -1;
-	else if (a == 0)
-		return 0;
-	else
-		return 1;
+	return (a > 0) - (a < 0);
 }
 
 int super(string s) {
 	return s.length();
 }
 
+//1 доп
+int fact(int a) {
+	if (a < 0) {
+		cout << "\nОшибка! Число не удовлетворяет условию (n >= 0)";
+		return 0;
+	}
+	else if (a == 0)
+		return 1;
+	else
+		return a * fact(a - 1);
+}
+
+//2 доп
+void rec(int a, int b) {
+	if (a == 1)
+		return;
+	if (a % b == 0) {
+		cout << b << " ";
+		rec(a / b, b);
+	}
+	else {
+		rec(a, b + 1);
+	}
+}
+void rec(int a) {
+	cout << "\nРазложение на простые множители числа " << a << ": ";
+	return rec(a, 2);
+}
+
+//4 доп
+string astr(string s, int n) {
+	for (int i = 0; i < n; i++) {
+		if (!(s[i] == 'а')) {
+			if (s[i] == 'ж')
+				s[i] = 'ё';
+			else if (s[i] == 'ё')
+				s[i] = 'е';
+			else 
+				s[i] = (char)((int)s[i] - 1);
+		}
+	}
+	return s;
+}
+string astr(string s) {
+	return astr(s, s.length());
+}
+int numMax(string s, int n) {
+	int max = -33;
+	int maxi = 0;
+	for (int i = 0; i < n; i++) {
+		if ((int)s[i] > max) {
+			max = (int)s[i];
+			maxi = i;
+		}
+	}
+	return maxi;
+}
+string aaa(string s) {
+	int l = s.length();
+	int maxi = numMax(s, l);
+	int count = 0;
+	cout << "\n" << s;
+	while (((int)s[maxi] > - 32) || (s[maxi] == 'ё')) {
+		s = astr(s, l);
+		count++;
+		cout << " - " << s;
+	}
+	cout << "\nКол-во шагов: " << count << endl;
+	return s;
+}
+
+//5 доп
+string strokaPoNomeru(int a, int b) {
+	string s = "";
+	if (max(a, b) >= 0)
+		for (int i = 0; i < max(a, b); i++)
+			s += (char)min(a, b);
+	return s;
+}
+
 int main()
 {
 	setlocale(0, "");
+
+	cout << "\n1 пункт--------------------\n";
 	getA("input.txt");
 	showA();
 	if (isSimilarMin() && isTwoEl()) {
@@ -111,9 +190,27 @@ int main()
 	}
 	showA();
 	putA("output.txt");
-	cout << "\n_________\n";
+
+	cout << "\n2 пункт--------------------\n";
 	cout << "\nsuper(2) = " << super(2);
 	cout << "\nsuper(0) = " << super(0);
 	cout << "\nsuper(-5) = " << super(-5);
 	cout << "\nsuper(Привет) = " << super("Привет");
+
+	cout << "\n\n1 доп--------------------\n";
+	cout << "\nФакториал числа 6 = " << fact(6);
+	cout << "\nФакториал числа 0 = " << fact(0);
+	cout << "\nФакториал числа -5 = " << fact(-5);
+
+	cout << "\n\n2 доп--------------------\n";
+	rec(264);
+	rec(15);
+	rec(12342);
+
+	cout << "\n\n3 доп--------------------\n";
+	string a;
+	a = aaa("абвгдеёжз");
+
+	cout << "\n\n4 доп--------------------\n";
+	cout << "strokaPoNomeru(40, -32) = " << strokaPoNomeru(40, -32);
 }
