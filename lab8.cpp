@@ -25,110 +25,102 @@ int main()
     cout << "\nВведите изменение размера массива S: ";
     cin >> S;
 
-    if (K + S > 0) {
+    if (K + S < 0) {
+        cout << "Введено некорректное число S";
+    } 
+    else {
         A = (int*)realloc(A, (K + S) * sizeof(int));
-        if (S >= 0) {
-            flag = true;
-            cout << "Введите элементы матрицы через пробел: \n";
-            for (int i = 0; i < K; i++) {
-                A[i] = i;
+        if (S < 0) {
+            cout << "Массив урезан: ";
+            for (int i = 0; i < K + S; i++)
                 cout << A[i] << " ";
-            }
         }
         else {
-            cout << "Массив урезан: ";
-            flag = false;
-            for (int i = 0; i < K + S; i++) {
-                A[i] = i;
+            cout << "Введите элементы матрицы через пробел: \n";
+            for (int i = 0; i < K; i++)
                 cout << A[i] << " ";
-            }
-        }
-    }
-    else {
-        cout << "Введено некорректное число S";
-        flag = false;
-    }
-    for (int i = K; i < K + S; i++)
-        cin >> A[i];
-    //var = 3
-    int temp;
-    //var = 4
-    int maxi, max = 0;
-    //var = 5
-    int count1 = 0;
-    int count0 = 0;
-    if (flag) 
-        switch (var)
-        {
-        case 1:
-            for (int i = K; i < K + S; i++) {
-                if (A[i] == 0) {
-                    for (int j = 0; j < K + S; j++)
-                        if (A[j] % 2 == 0)
+            for (int i = K; i < K + S; i++)
+                cin >> A[i];
+            //var = 3
+            int temp;
+            //var = 4
+            int maxi, max = 0;
+            //var = 5
+            int count1 = 0;
+            int count0 = 0;
+            switch (var)
+            {
+            case 1:
+                for (int i = K; i < K + S; i++) {
+                    if (A[i] == 0) {
+                        for (int j = 0; j < K + S; j++)
+                            if (A[j] % 2 == 0)
+                                A[j] = 0;
+                        break;
+                    }
+                }
+                break;
+            case 2:
+                for (int i = K; i < K + S - 1; i++)
+                    if (A[i] == A[i + 1] && (i + 2) < (K + S))
+                        for (int j = i + 2; j < K + S; j++)
                             A[j] = 0;
-                    break;
+                break;
+            case 3:
+                temp = 0;
+                for (int i = K; i < K + S; i++) {
+                    if (A[i] > 0)
+                        temp++;
+                    if (temp > 3) {
+                        for (int j = K; j < K + S; j++)
+                            if (A[j] < 0)
+                                A[j] *= -1;
+                        break;
+                    }
                 }
+                break;
+            case 4:
+                for (int i = K; i < K + S; i++)
+                    if (A[i] > max) {
+                        max = A[i];
+                        maxi = i;
+                    }
+                if (A[maxi] % 2 == 1)
+                    A[maxi] *= 100;
+                break;
+            case 5:
+                for (int i = K; i < K + S; i++)
+                    if (A[i] % 2)
+                        count1++;
+                    else
+                        count0++;
+                if (count0 > count1)
+                    for (int i = 0; i < K + S; i++)
+                        A[i]++;
+                break;
+            case 6:
+                for (int i = K; i < K + S; i++)
+                    if (A[i] < 0) {
+                        for (int j = 0; j < K + S; j++)
+                            A[j] += 5;
+                        break;
+                    }
+                break;
+            case 7:
+                flag = false;
+                for (int i = K; i < K + S; i++)
+                    if (A[i] == 1)
+                        flag = true;
+                if (!flag)
+                    A[K + S - 1] = 999;
+                break;
+            default:
+                break;
             }
-            break;
-        case 2:
-            for (int i = K; i < K + S - 1; i++)
-                if (A[i] == A[i + 1] && (i + 2) < (K + S))
-                    for (int j = i + 2; j < K + S; j++)
-                        A[j] = 0;
-            break;
-        case 3:
-            temp = 0;
-            for (int i = K; i < K + S; i++) {
-                if (A[i] > 0)
-                    temp++;
-                if (temp > 3) {
-                    for (int j = K; j < K + S; j++)
-                        if (A[j] < 0)
-                            A[j] *= -1;
-                    break;
-                }
-            }
-            break;
-        case 4:
-            for (int i = K; i < K + S; i++)
-                if (A[i] > max) {
-                    max = A[i];
-                    maxi = i;
-                }
-            if (A[maxi] % 2 == 1)
-                A[maxi] *= 100;
-            break;
-        case 5:
-            for (int i = K; i < K + S; i++)
-                if (A[i] % 2)
-                    count1++;
-                else
-                    count0++;
-            if (count0 > count1)
-                for (int i = 0; i < K + S; i++)
-                    A[i]++;
-            break;
-        case 6:
-            for (int i = K; i < K + S; i++)
-                if (A[i] < 0) {
-                    for (int j = 0; j < K + S; j++)
-                        A[j] += 5;
-                    break;
-                }
-            break;
-        case 7:
-            flag = false;
-            for (int i = K; i < K + S; i++)
-                if (A[i] == 1)
-                    flag = true;
-            if (!flag)
-                A[K + S - 1] = 999;
-            break;
-        default:
-            break;
+            for (int i = 0; i < K + S; i++)
+                cout << A[i] << " ";
         }
-    for (int i = 0; i < K + S; i++)
-        cout << A[i] << " ";
+    }
     free(A);
 
     int N, M;
