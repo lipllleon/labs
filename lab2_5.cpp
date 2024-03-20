@@ -33,15 +33,15 @@ public:
     R_Complex& operator +=(R_Complex& other)
     {
         r = sqrt(this->r * this->r + other.r * other.r + 2 * this->r * other.r * cos(abs(this->y - other.y)));
-        float tan = (this->r * sin(this->y) + other.r * sin(other.y)) / (this->r * cos(this->y) + other.r * cos(other.y));
-        if ((this->r * cos(this->y) + other.r * cos(other.y)) == 0)
-            if ((this->r * sin(this->y) + other.r * sin(other.y)) > 0)
+        float tan = (this->r * sin(this->y) + other.r * sin(other.y)) / (this->r * cos(this->y) + other.r * cos(other.y)); //b1+b2 / a1+a2
+        if ((this->r * cos(this->y) + other.r * cos(other.y)) == 0) // a1+a2
+            if ((this->r * sin(this->y) + other.r * sin(other.y)) > 0) //b1+b2
                 y = pi / 2;
             else
                 y = 3*pi/2
         else {
             y = atan(tan);
-            if (cos(tan) < 0)
+              if ((this->r * cos(this->y) + other.r * cos(other.y)) < 0) //a1+a2
                 y += pi;
         }
         return *this;
