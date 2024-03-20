@@ -1,90 +1,166 @@
 ﻿#include <iostream>
 
-class D_Complex 
+const float pi = acos(-1);
+
+class R_Complex
 {
 private:
-    int a;
-    int b;
+    float r;
+    float y;
 
 public:
-    D_Complex() = default;
-    D_Complex(int x)
+    R_Complex() = default;
+    R_Complex(float a, float alpha)
     {
-        a = x;
-        b = 0;
+        r = a;
+        y = alpha;
     }
-    D_Complex(int x, int y)
+    R_Complex(R_Complex& other)
     {
-        a = x;
-        b = y;
+        r = other.r;
+        y = other.y;
     }
-    D_Complex(D_Complex& c)
-    {
-        a = c.a;
-        b = c.b;
-    }
-    ~D_Complex() {
-        std::cout << "Комплексное число: " << "(" << a << ", " << b << ") удалено\n";
+    ~R_Complex() {
+        std::cout << "Комплексное число: " << "(" << r << ", " << y << ") удалено\n";
     }
 
-    D_Complex& operator +=(D_Complex& other)
+    R_Complex& operator =(R_Complex& other)
     {
-        a += other.a;
-        b += other.b;
+        this->r = other.r;
+        this->y = other.y;
         return *this;
     }
-    D_Complex operator +(const D_Complex& other) {
-        D_Complex temp(this->a + other.a, this->b + other.b);
-        return temp;
-    }
-    D_Complex& operator -=(D_Complex& other)
+    R_Complex& operator +=(R_Complex& other)
     {
-        a -= other.a;
-        b -= other.b;
+        r = sqrt(this->r * this->r + other.r * other.r + 2 * this->r * other.r * cos(abs(this->y - other.y)));
+        float tan = (this->r * sin(this->y) + other.r * sin(other.y)) / (this->r * cos(this->y) + other.r * cos(other.y));
+        if ((this->r * cos(this->y) + other.r * cos(other.y)) == 0)
+            if ((this->r * sin(this->y) + other.r * sin(other.y)) > 0)
+                y = pi / 2;
+            else
+                y = 3*pi/2
+        else {
+            y = atan(tan);
+            if (cos(tan) < 0)
+                y += pi;
+        }
         return *this;
     }
-    D_Complex operator -(const D_Complex& other) {
-        D_Complex temp(this->a - other.a, this->b - other.b);
+    R_Complex& operator +(const R_Complex& other) 
+    {
+        R_Complex temp(sqrt(this->r*this->r + other.r*other.r + 2*this->r*other.r*cos(abs(this->y - other.y))), atan((this->r*sin(this->y) + other.r*sin(other.y))/(this->r * cos(this->y) + other.r * cos(other.y))));
         return temp;
     }
-    D_Complex& operator++()
+    R_Complex& operator *=(R_Complex& other)
     {
-        a++;
+        r = this->r * other.r;
+        y = this->y + other.y;
         return *this;
     }
-    D_Complex& operator++(int value)
+    R_Complex& operator *(const R_Complex& other)
     {
-        D_Complex temp(*this);
-        this->a++;
+        R_Complex temp(this->r * other.r, this->y + other.y);
         return temp;
     }
+    R_Complex& operator++()
+    {
+        r++;
+        return *this;
+    }
+    R_Complex& operator++(int value)
+    {
+        R_Complex temp(*this);
+        this->r++;
+        return temp;
+    }
+
+
+
+    float get_r()
+    {
+        return this->r;
+    }
+    float get_y()
+    {
+        return this->y;
+    }
+
     void print()
     {
-        std::cout << "(" << a << ", " << b << ")\n";
+        std::cout << "(" << r << ", " << y << ")\n";
     }
 };
 
-void print(D_Complex& c)
+void print(R_Complex& c)
 {
     c.print();
+}
+
+float scalarC(R_Complex& a, R_Complex& b)
+{
+    return a.get_r() * b.get_r() * cos(abs(a.get_y() - b.get_y()));
+}
+
+R_Complex& absC(R_Complex& a, R_Complex& b)
+{
+    if (a.get_r() >= b.get_r())
+        return a;
+    else
+        return b;
+}
+
+int qC(R_Complex& a)
+{
+    if (a.get_r() == 0)
+        return 1;
+    float alpha = a.get_y();
+    while (alpha >= 2 * pi)
+        alpha -= 2 * pi;
+    while (alpha < 0)
+        alpha += 2 * pi;
+    
+    if (alpha < pi)
+        if (alpha < pi / 2)
+            return 1;
+        else
+            return 2;
+    else
+        if (alpha < 3 * pi / 2)
+            return 3;
+        else
+            return 4;
 }
 
 int main()
 {
     setlocale(0, "");
-    D_Complex a(2, 2);
-    D_Complex b(3, -2);
-    a.print();
-    b.print();
-    D_Complex c;
+    R_Complex a(4, 3*pi/4);
+    R_Complex b(3, pi/3);
+    print(a);
+    print(b);
+    R_Complex c;
     c = b++;
     print(b);
     print(c);
-    a += b;
+    a.operator+=(b);
     print(a);
-    a -= c;
-    print(a);
-    D_Complex d;
+    R_Complex d;
     d = a + c;
     print(d);
+
+    std::cout << "\n\nСкалярное произведение комплексных чисел: ";
+    print(a);
+    print(b);
+    std::cout << "= " << scalarC(a, b) << std::endl;;
+
+    d = absC(a, b);
+    std::cout << "\n\nМаксимальное по модулю из чисел: ";
+    print(a);
+    print(b);
+    std::cout << "= ";
+    print(d);
+
+    std::cout << "\n\nКвадрант комплексного числа: ";
+    print(a);
+    std::cout << qC(a) << std::endl;
 }
