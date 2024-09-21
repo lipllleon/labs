@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <windows.h>
 
 const double pi = acos(-1);
 
