@@ -42,13 +42,13 @@ answer HalfDivision(double (*f)(double)) {
   float E = 0.001;
   int count = 0;
 
-  while (!isDifferent(f, L, R)) {
+  while (!isDifferent(f, L, R && abs(f(L)) < 100)) {
     L += step;
     R += step;
   }
   double M = getMidPoint(L, R);
 
-  while (abs(f(M)) > E) {
+  while (abs(f(M)) > E && count < 100) {
     if (isDifferent(f, L, M))
       R = M;
     else
