@@ -1,2 +1,4 @@
 
 *.exe
+.vscode/settings.json
+sem3/asd/__pycache__/lab1.cpython-312.pyc

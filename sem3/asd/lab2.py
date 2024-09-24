@@ -7,7 +7,7 @@ def priority(operator):
         return 2
     return 0
 
-def transformation(expr):
+def get_RPN(expr):  #Reverse Polish Notation
     output = []
     stack = []
     
@@ -35,52 +35,57 @@ def transformation(expr):
     
     while stack:
         output.append(stack.pop())
-        
+    
     print(output)
     return output
 
 def evaluate_math_expression(expr):
     stack = []
     
-    for c in expr:
-        if isinstance(c, int):
-            stack.append(c)
+    for element in expr:
+        if isinstance(element, int):
+            stack.append(element)
         else:
             b = stack.pop()
             a = stack.pop()
-            if c == '+':
+            if element == '+':
                 stack.append(a + b)
                 print(f'{a} + {b} = {a + b}')
-            elif c == '-':
+            elif element == '-':
                 stack.append(a - b)
                 print(f'{a} - {b} = {a - b}')
-            elif c == '*':
+            elif element == '*':
                 stack.append(a * b)
                 print(f'{a} * {b} = {a * b}')
-            elif c == '/':
+            elif element == '/':
                 if b == 0:
                     print(f"Ошибка: деление на ноль ({a} / {b})")
                     return
                 stack.append(a / b)
                 print(f'{a} / {b} = {a / b}')
-
+    
     return stack.pop()
 
-def eval_expr():
-    expr = input("Введите математическое выражение (заканчивается на '='):\n").strip()
+def eval_expr(expression):
+    expr = expression.strip()
     
     if not check_brackets(expr):
         print("Ошибка: скобки расставлены неверно")
         return
     if not expr.endswith('='):
-        print("Ошибка: expr должно заканчиваться на '='.")
+        print("Ошибка: выражение должно заканчиваться на '='")
         return
-    
     expr = expr[:-1].strip()
-    expr = transformation(expr)
-    result = evaluate_math_expression(expr)
+    
+    expr = get_RPN(expr)
+    return evaluate_math_expression(expr)
+    
+
+def main():
+    expression = input("Введите математическое выражение (заканчивается на '='):\n")
+    result = eval_expr(expression)
     if result != None:
         print("Результат:", result)
 
-# Запуск функции
-eval_expr()
+if __name__ == "__main__":
+    main()
