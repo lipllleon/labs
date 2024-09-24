@@ -42,7 +42,7 @@ answer HalfDivision(double (*f)(double)) {
   float E = 0.001;
   int count = 0;
 
-  while (!isDifferent(f, L, R && abs(f(L)) < 100)) {
+  while (!isDifferent(f, L, R) && abs(f(L)) < 100) {
     L += step;
     R += step;
   }
