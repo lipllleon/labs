@@ -11,45 +11,35 @@ def get_RPN(expr):  #Reverse Polish Notation
     output = []
     stack = []
     
-    isLastDigit = False
-    decimal_point = False
+    number = ''
     isLastOperator = False
     for symbol in expr:
-        if symbol.isdigit():
-            if not isLastDigit:
-                output.append(int(symbol))
-            else:
-                if not decimal_point:
-                    output.append(output.pop()*10 + int(symbol))
-                else:
-                    output.append(output.pop() + int(symbol) * n)
-                    n *= 0.1
-            isLastDigit = True
-        elif symbol == '.' and isLastDigit and not decimal_point:
-            decimal_point = True
-            n = 0.1
-            
-        else:
-            isLastDigit = False
-            decimal_point = False
-            if symbol in ('+', '-', '*', '/'):
-                if isLastOperator:
-                    print("Ошибка: проверьте запись выражения!")
-                    return
-                while (stack and stack[-1] != '(' and priority(stack[-1]) >= priority(symbol)):
-                    output.append(stack.pop())
-                stack.append(symbol)
-                isLastOperator = True
-            elif symbol == '(':
-                stack.append(symbol)
-            elif symbol == ')':
-                while stack and stack[-1] != '(':
-                    output.append(stack.pop())
-                stack.pop()
-            else:
+        if symbol in "0123456789.":
+            number += symbol
+            continue
+        elif number:
+            output.append(float(number))
+            number = ''
+            isLastOperator = False
+        if symbol in ('+', '-', '*', '/'):
+            if isLastOperator:
                 print("Ошибка: проверьте запись выражения!")
                 return
-    
+            while (stack and stack[-1] != '(' and priority(stack[-1]) >= priority(symbol)):
+                output.append(stack.pop())
+            stack.append(symbol)
+            isLastOperator = True
+        elif symbol == '(':
+            stack.append(symbol)
+        elif symbol == ')':
+            while stack and stack[-1] != '(':
+                output.append(stack.pop())
+            stack.pop()
+        else:
+            print("Ошибка: проверьте запись выражения!")
+            return
+    if number:
+        output.append(float(number))
     while stack:
         output.append(stack.pop())
     
@@ -59,7 +49,7 @@ def evaluate_RPN(expr):
     stack = []
     
     for element in expr:
-        if isinstance(element, float) or isinstance(element, int):
+        if isinstance(element, float):
             stack.append(element)
         else:
             b = stack.pop()
